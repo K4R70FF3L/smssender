@@ -1,6 +1,7 @@
 from flask import Flask
 from redis import Redis
 from sim800l import SIM800L
+from gmail import Gmail
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.redis import RedisJobStore
 
@@ -25,7 +26,9 @@ def check_heartbeats():
     fire_detectors = redis.smembers('fire:detectors')
     for detector in fire_detectors:
         if (not redis.exists('fire:heartbeats:{}'.format(detector))):
-            pass  # TODO implement notificatin for dead detectors
+            gmail = Gmail()
+            gmail.sendEmail(subject='{} flatlined'.format(detector), to=redis.smembers('fire:contacts:email'),
+                            message_text="Von {} wurde kein Heartbeat mehr empfangen, schau besser mal nach was da los ist.".format(detector))
 
 
 scheduler = BackgroundScheduler(jobstores={'redis': RedisJobStore(db=1)})
