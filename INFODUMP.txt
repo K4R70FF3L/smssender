@@ -1,0 +1,21 @@
+Disable PIN
+-----------
+
+AT+CPIN?
+>>> +CPIN: SIM PIN // pin codes need to be entered
+>>> OK
+
+AT+CPIN="9546"
+>>>; OK
+
+AT+CLCK="SC",0,"9546" // disable pin code
+>>> OK
+
+AT+CMGF=1
+AT+CMGS="+4917692261204"
+
+AT-Commands: https://lastminuteengineers.com/sim800l-gsm-module-arduino-tutorial/
+Useful Python Code: https://medium.com/@jackogina60/connecting-sim8ool-gsm-module-with-raspberry-pi-to-send-sms-read-sms-etc-using-python-f27716449405
+AT-Command Docs: https://raspberry-pi.fr/download/SIM800%20Series_AT%20Command%20Manual_V1.09.pdf
+Verdrahtung (a. d. fr.?): https://dasraspberrypi.de/sim800l-gsm-gps-raspberry-4/
+AT-Lib(?): https://github.com/stephaneAG/SIM800L
