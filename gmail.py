@@ -9,7 +9,8 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/gmail.send']
+SCOPES = ['https://www.googleapis.com/auth/gmail.send',
+          'https://www.googleapis.com/auth/gmail.readonly']
 
 
 class Gmail:
@@ -39,14 +40,16 @@ class Gmail:
 
         self.service = build('gmail', 'v1', credentials=creds)
         # pylint: disable=maybe-no-member
-        self.email = self.service.users().getProfile()['emailAddress']
+        self.email = self.service.users().getProfile(
+            userId='me').execute()['emailAddress']
 
     def sendEmail(self, subject, to, message_text):
         message = MIMEText(message_text)
         message['from'] = self.email
         message['subject'] = subject
-        message['to'] = to
-        message = {'raw': base64.urlsafe_b64encode(message.as_string())}
+        message['to'] = ', '.join(to)
+        message = {'raw': base64.urlsafe_b64encode(
+            message.as_bytes()).decode()}
         try:
             # pylint: disable=maybe-no-member
             self.service.users().messages().send(userId='me', body=message).execute()
