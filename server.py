@@ -24,6 +24,11 @@ def fire_alarm():
         sim.send_sms(contact, 'Feuer!')
 
 
+@app.route('/fire/unregister/<id>')
+def remove_fire_detector(id):
+    redis.srem('fire:detectors', id)
+
+
 @app.route('/fire/register/<id>')
 def register_fire_detector(id):
     redis.sadd('fire:detectors', id)
