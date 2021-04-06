@@ -1,0 +1,8 @@
+google_auth_oauthlib==0.4.2
+Flask_APScheduler==1.11.0
+Flask==1.1.2
+APScheduler==3.7.0
+Flask_And_Redis==1.0.0
+google_api_python_client==2.1.0
+protobuf==3.15.7
+pyserial==3.5
